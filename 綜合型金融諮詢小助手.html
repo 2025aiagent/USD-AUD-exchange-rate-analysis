@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>綜合型金融諮詢小助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .exchange-rates {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rate-card {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .rate-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(66, 153, 225, 0.3);
+        }
+        
+        .rate-pair {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .rate-value {
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .service-title {
+            font-size: 1.3rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .service-desc {
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        .investment-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .investment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .investment-card {
+            background: linear-gradient(135deg, #38b2ac, #319795);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .investment-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .investment-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .investment-points {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .investment-points li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .investment-points li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #68d391;
+            font-weight: bold;
+        }
+        
+        .chat-interface {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-top: 30px;
+        }
+        
+        .chat-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .chat-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s ease;
+        }
+        
+        .chat-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .update-time {
+            text-align: center;
+            color: #718096;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏦 綜合型金融諮詢小助手</h1>
+            <p>匯率 | 股市 | 保險 | 信用卡推薦 | 投資諮詢</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="exchange-rates">
+                <h2 class="section-title">💱 即時匯率</h2>
+                <div class="rate-card">
+                    <div class="rate-pair">USD/TWD</div>
+                    <div class="rate-value">29.71</div>
+                    <small>美元兌新台幣</small>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-pair">AUD/TWD</div>
+                    <div class="rate-value">19.13</div>
+                    <small>澳幣兌新台幣</small>
+                </div>
+                <div class="update-time">
+                    更新時間: 2025/08/04 12:00
+                </div>
+            </div>
+            
+            <div class="investment-section">
+                <h2 class="section-title">📈 投資建議</h2>
+                <div class="investment-grid">
+                    <div class="investment-card">
+                        <div class="investment-title">投資型保單</div>
+                        <ul class="investment-points">
+                            <li>連結全球基金</li>
+                            <li>保障+投資雙重功能</li>
+                            <li>稅務優惠</li>
+                        </ul>
+                    </div>
+                    <div class="investment-card">
+                        <div class="investment-title">黃金投資</div>
+                        <ul class="investment-points">
+                            <li>避險保值工具</li>
+                            <li>與匯率負相關</li>
+                            <li>通膨對沖</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card" onclick="showService('exchange')">
+                <div class="service-icon">💱</div>
+                <div class="service-title">匯率服務</div>
+                <div class="service-desc">即時匯率查詢、匯率走勢分析、最佳換匯時機建議</div>
+            </div>
+            
+            <div class="service-card" onclick="showService('stock')">
+                <div class="service-icon">📊</div>
+                <div class="service-title">股市分析</div>
+                <div class="service-desc">台股、美股、港股分析，投資組合建議</div>
+            </div>
+            
+            <div class="service-card" onclick="showService('insurance')">
+                <div class="service-icon">🛡️</div>
+                <div class="service-title">保險規劃</div>
+                <div class="service-desc">壽險、醫療險、投資型保單專業規劃</div>
+            </div>
+            
+            <div class="service-card" onclick="showService('credit')">
+                <div class="service-icon">💳</div>
+                <div class="service-title">信用卡推薦</div>
+                <div class="service-desc">根據消費習慣推薦最適合的信用卡</div>
+            </div>
+        </div>
+        
+        <div class="chat-interface">
+            <h2 class="section-title">💬 AI諮詢服務</h2>
+            <input type="text" class="chat-input" placeholder="請輸入您的問題，例如：美元會繼續升值嗎？" id="userInput">
+            <button class="chat-button" onclick="processQuery()">發送諮詢</button>
+            <div id="chatResponse" style="margin-top: 20px; padding: 15px; background: #f7fafc; border-radius: 8px; display: none;"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 模擬即時匯率更新
+        function updateRates() {
+            const usdRate = document.querySelector('.rate-card:first-child .rate-value');
+            const audRate = document.querySelector('.rate-card:last-child .rate-value');
+            
+            const usdVariation = (Math.random() - 0.5) * 0.1;
+            const audVariation = (Math.random() - 0.5) * 0.1;
+            
+            const newUsdRate = (29.71 + usdVariation).toFixed(2);
+            const newAudRate = (19.13 + audVariation).toFixed(2);
+            
+            usdRate.textContent = newUsdRate;
+            audRate.textContent = newAudRate;
+            
+            document.querySelector('.update-time').textContent = 
+                '更新時間: ' + new Date().toLocaleString('zh-TW');
+        }
+        
+        // 每30秒更新匯率
+        setInterval(updateRates, 30000);
+        
+        // 服務展示
+        function showService(serviceType) {
+            const services = {
+                exchange: {
+                    title: '匯率服務',
+                    content: '提供即時匯率查詢、歷史走勢分析、最佳換匯時機提醒。支援美元、歐元、日圓、澳幣等主要貨幣。'
+                },
+                stock: {
+                    title: '股市分析',
+                    content: '專業股市分析師提供台股、美股、港股投資建議，包含技術分析、基本面分析和投資組合配置。'
+                },
+                insurance: {
+                    title: '保險規劃',
+                    content: '專業保險顧問提供完整保險規劃，包含壽險、醫療險、意外險、投資型保單等產品比較。'
+                },
+                credit: {
+                    title: '信用卡推薦',
+                    content: '根據您的消費習慣、收入狀況，推薦最適合的信用卡，包含現金回饋、紅利點數、旅遊優惠等。'
+                }
+            };
+            
+            const service = services[serviceType];
+            alert(`${service.title}\n\n${service.content}`);
+        }
+        
+        // AI諮詢處理
+        function processQuery() {
+            const input = document.getElementById('userInput');
+            const response = document.getElementById('chatResponse');
+            const query = input.value.trim();
+            
+            if (!query) {
+                alert('請輸入您的問題');
+                return;
+            }
+            
+            response.style.display = 'block';
+            response.innerHTML = '<div style="color: #667eea;">🤖 正在分析您的問題...</div>';
+            
+            setTimeout(() => {
+                let aiResponse = '';
+                
+                if (query.includes('美元') || query.includes('USD')) {
+                    aiResponse = `
+                        <strong>💡 美元分析：</strong><br>
+                        根據目前技術面分析，美元呈現震盪走勢。建議：<br>
+                        • 短期內可能在29.5-30.0區間震盪<br>
+                        • 關注Fed利率政策動向<br>
+                        • 建議分批換匯，降低匯率風險<br><br>
+                        <strong>📊 投資建議：</strong><br>
+                        可考慮投資型保單連結美元基金，兼顧保障與投資效益。
+                    `;
+                } else if (query.includes('澳幣') || query.includes('AUD')) {
+                    aiResponse = `
+                        <strong>💡 澳幣分析：</strong><br>
+                        澳幣受商品價格影響較大，目前呈現相對弱勢。建議：<br>
+                        • 關注鐵礦石、黃金等商品價格<br>
+                        • 澳洲央行政策較為寬鬆<br>
+                        • 適合長期投資配置<br><br>
+                        <strong>📈 黃金投資：</strong><br>
+                        黃金與澳幣有一定正相關性，可作為投資組合一部分。
+                    `;
+                } else if (query.includes('保險') || query.includes('投資型')) {
+                    aiResponse = `
+                        <strong>🛡️ 投資型保單建議：</strong><br>
+                        投資型保單結合保障與投資功能，適合以下族群：<br>
+                        • 有保險需求且希望資產增值<br>
+                        • 希望享有稅務優惠<br>
+                        • 偏好專業投資管理<br><br>
+                        <strong>💼 推薦配置：</strong><br>
+                        • 40% 全球股票型基金<br>
+                        • 30% 債券型基金<br>
+                        • 30% 多元資產基金
+                    `;
+                } else if (query.includes('黃金')) {
+                    aiResponse = `
+                        <strong>🥇 黃金投資分析：</strong><br>
+                        黃金作為避險資產，在通膨環境下表現較佳：<br>
+                        • 與美元呈負相關關係<br>
+                        • 適合作為投資組合5-10%配置<br>
+                        • 可透過黃金ETF、黃金存摺投資<br><br>
+                        <strong>⚖️ 投資時機：</strong><br>
+                        建議在地緣政治風險升高或通膨預期上升時增持。
+                    `;
+                } else {
+                    aiResponse = `
+                        <strong>🤖 綜合分析：</strong><br>
+                        感謝您的諮詢！我們的專業團隊提供以下服務：<br><br>
+                        <strong>📞 聯繫方式：</strong><br>
+                        • 匯率諮詢：分機1001<br>
+                        • 股市分析：分機1002<br>
+                        • 保險規劃：分機1003<br>
+                        • 信用卡服務：分機1004<br><br>
+                        或您可以重新描述您的具體需求，我會提供更精準的建議。
+                    `;
+                }
+                
+                response.innerHTML = aiResponse;
+            }, 1500);
+            
+            input.value = '';
+        }
+        
+        // 支援Enter鍵發送
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processQuery();
+            }
+        });
+    </script>
+</body>
+</html>
